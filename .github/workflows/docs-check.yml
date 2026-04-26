@@ -1,0 +1,19 @@
+name: Documentation Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify docs structure
+        run: |
+          for f in README.md docs/api-reference.md docs/data-flow.md docs/deployment.md; do
+            [ -f "$f" ] && echo "Found: $f" || { echo "Missing: $f"; exit 1; }
+          done
+          echo "All documentation files present."
